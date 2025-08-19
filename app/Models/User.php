@@ -6,53 +6,73 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
 
     use HasFactory;
     protected $fillable = [
-    'name',
-    'last_name',
-    'document_type',
-    'document',
-    'phone',
-    'address',
-    'email',
-    'password',
-    'username',
-];
+        'name',
+        'last_name',
+        'document_type',
+        'document',
+        'phone',
+        'address',
+        'email',
+        'password',
+        'username',
+    ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // normalmente es el id
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
 
 
     public function roles()
     {
-    return $this->belongsToMany(Role::class, 'role_user')
-                ->using(RoleUser::class)
-                ->withTimestamps();
+        return $this->belongsToMany(Role::class, 'role_user')
+            ->using(RoleUser::class)
+            ->withTimestamps();
     }
 
-    public function company() {
+    public function company()
+    {
         return $this->hasOne(Company::class);
     }
 
-    public function carts() {
+    public function carts()
+    {
         return $this->hasMany(Cart::class);
     }
 
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function paymentCards() {
+    public function paymentCards()
+    {
         return $this->hasMany(PaymentCard::class);
     }
 
-    public function reviews() {
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function invoices() {
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 
