@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('products/best-sellers', [ProductController::class, 'bestSellers']);
 
 Route::prefix('auth')->group(function () {
     // 🔹 Rutas públicas
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    
 
     // 🔹 Rutas protegidas por JWT
     Route::middleware('auth:api')->group(function () {

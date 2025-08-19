@@ -18,8 +18,14 @@ return new class extends Migration
             $table->text('description');
             $table->text('barcode')->nullable();
             $table->decimal('unit_price', 10, 2);
-            $table->string('media')->nullable();
+            $table->text('media')->nullable();
             $table->enum('state', ['available', 'unavailable'])->default('available');
+
+            // Nuevos campos para Best Sellers
+            $table->decimal('rating', 2, 1)->default(0); // promedio de reseñas
+            $table->unsignedBigInteger('sales_count')->default(0); // número de ventas
+            $table->boolean('is_best_seller')->default(false); // opcional, para marcar manualmente
+
             $table->timestamps();
         });
     }

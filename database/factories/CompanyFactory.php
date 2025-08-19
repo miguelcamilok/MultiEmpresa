@@ -12,7 +12,6 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::factory(),
             'name' => $this->faker->company,
             'nit' => $this->faker->unique()->numerify('#########'),
             'website' => $this->faker->address,
