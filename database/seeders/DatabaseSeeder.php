@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         Warehouse::factory()->count(2)->create();
         Category::factory()->count(5)->create();
         Characteristic::factory()->count(10)->create();
-        Product::factory()->count(20)->create();
+        Product::factory()->count(200)->create();
         Stock::factory()->count(30)->create();
         Cart::factory()->count(10)->create();
         CartProduct::factory()->count(30)->create();

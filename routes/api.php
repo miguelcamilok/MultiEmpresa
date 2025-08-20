@@ -5,6 +5,11 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('products/best-sellers', [ProductController::class, 'bestSellers']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/category/{category}', [ProductController::class, 'byCategory']);
+
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
 
 Route::prefix('auth')->group(function () {
     // 🔹 Rutas públicas

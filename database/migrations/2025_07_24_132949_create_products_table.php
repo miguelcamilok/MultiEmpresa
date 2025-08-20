@@ -16,16 +16,31 @@ return new class extends Migration
             $table->foreignId('branch_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description');
-            $table->text('barcode')->nullable();
+            $table->string('barcode')->nullable();
             $table->decimal('unit_price', 10, 2);
-            $table->text('media')->nullable();
+            $table->decimal('original_price', 10, 2)->nullable();
+            $table->string('discount')->nullable();
+            $table->string('category')->default('general');
+            $table->string('subcategory')->nullable();
+            $table->string('brand')->nullable();
+            $table->string('model')->nullable();       // modelo único
+            $table->string('color')->nullable();       // color único
+            $table->string('size')->nullable();        // talla o tamaño único
+            $table->string('dimensions')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('material')->nullable();
+            $table->json('features')->nullable();      // array de características
+            $table->string('warranty')->nullable();
+            $table->string('packaging')->nullable();
+            $table->text('notes')->nullable();
+            $table->json('media')->nullable();
             $table->enum('state', ['available', 'unavailable'])->default('available');
-
-            // Nuevos campos para Best Sellers
-            $table->decimal('rating', 2, 1)->default(0); // promedio de reseñas
-            $table->unsignedBigInteger('sales_count')->default(0); // número de ventas
-            $table->boolean('is_best_seller')->default(false); // opcional, para marcar manualmente
-
+            $table->boolean('free_shipping')->default(false);
+            $table->boolean('international')->default(false);
+            $table->decimal('shipping_price', 10, 2)->nullable();
+            $table->decimal('rating', 2, 1)->default(0);   // promedio de reseñas
+            $table->unsignedBigInteger('sales_count')->default(0);
+            $table->boolean('is_best_seller')->default(false);
             $table->timestamps();
         });
     }
