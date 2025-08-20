@@ -47,7 +47,6 @@ class AuthController extends Controller
             $user->companies()->attach($company->id);
         } else {
             // Registro normal (cliente)
-            // 🔑 crea el rol si no existe
             $role = Role::firstOrCreate(['name' => 'client']);
 
             $user = User::create([
@@ -68,9 +67,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-
-
-
     /**
      * Login con JWT.
      */
@@ -82,9 +78,22 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        $user = Auth::user()->load('roles', 'companies');
+
+        // 🔒 Validar si la empresa del usuario está pendiente
+        if ($user->companies->count() > 0) {
+            foreach ($user->companies as $company) {
+                if ($company->status === 'pending') {
+                    return response()->json([
+                        'error' => 'Tu empresa aún no ha sido aprobada. Debes esperar la confirmación del administrador.'
+                    ], 403);
+                }
+            }
+        }
+
         return response()->json([
             'token' => $token,
-            'user'  => Auth::user()->load('roles')
+            'user'  => $user
         ]);
     }
 
@@ -99,7 +108,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return response()->json($user->load('roles'));
+        return response()->json($user->load('roles', 'companies'));
     }
 
     /**
